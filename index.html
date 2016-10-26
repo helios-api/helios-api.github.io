@@ -4,13 +4,20 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Hosted Payment Page</title>
+    <title>Deutsche Payment Developer Portal</title>
+
+    <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon" />
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="javascripts/all_nosearch.js" type="text/javascript"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
 
+      <script>
+        $(function() {
+          setupLanguages(["curl"]);
+        });
+      </script>
   </head>
 
   <body class="index">
@@ -24,22 +31,39 @@
       <div class="logo-wrapper">
         <img src="images/logo.png" />
       </div>
+        <div class="lang-selector">
+              <a href="#" data-language-name="curl">curl</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        
-          <h1 id="introduction">Introduction</h1>
+        <h1 id='introduction'>Introduction</h1>
+<p>Welcome to the Deutsche Payment Developer Portal!</p>
 
-<p>Hosted Payment Page (for short HPP) is a service provided for merchants using
-DP Payment Gateway for fast and easy payment integration. It lifts off need
-for PCI DSS certification from merchant, because no sensitive data is
-processed by merchants backend.</p>
+<p>You&rsquo;ll find here instruction on how to integrate with Helios Gateway.</p>
+
+          <h1 id='hosted-payment-page'>Hosted Payment Page</h1>
+          <h2 id='introduction'>Introduction</h2>
+<p>Take advantage of all the benefits of Hosted Payment Page while enabling customers to maximise their shopping experience!</p>
+
+<p>This Payments API provides an easy and secure way to accept online credit card payments.</p>
+
+<p>Hosted Payment Page (for short HPP) is a service provided for merchants using DP Payment Gateway for fast and easy payment integration.</p>
+
+<p>It lifts off the need for PCI DSS certification from merchants, because no sensitive data is processed by their shops’ backends.</p>
+
+<p>Using the HPP enables the customers to use Dynamic Currency Conversion service out of the box without any need for additional development on the Merchant’s side.</p>
+
+<p>Most of the configuration is done using the Merchant Panel interface. In order to create the API Token or configure the redirection and webhook urls visit the Integration menu tab.</p>
+
+<p>To start making payments using this API one just needs to provide the token when making the calls to his customised HPP.</p>
 
 <p><a title="HPP Integration Flow diagram" href="images/integration_flow.png"><img alt="HPP Integration Flow diagram" src="images/integration_flow.png" /></a></p>
 
@@ -48,14 +72,7 @@ merchant willing to use this service.</p>
 
 <p>All requests are following basic REST principles of designing API.</p>
 
-          <h1 id="api">API</h1>
-
-<p><strong>Note</strong>: All requests commands examples are using
-<a href="https://github.com/jkbrzt/httpie">httpie</a> for readability, but will of course
-work using any http tool or library.</p>
-
-          <h2 id="authentication">Authentication</h2>
-
+          <h2 id='authentication'>Authentication</h2>
 <p>In order to use API requests need to contain merchant API token either
 generated using Helios API or Merchant Panel. Lack of token or invalid token
 will result in HTTP code 401 and response.</p>
@@ -63,25 +80,22 @@ will result in HTTP code 401 and response.</p>
 <blockquote>
 <p>Example request</p>
 </blockquote>
-<pre><code class="highlight shell">  http POST http://hpp-domain/payment <span class="nv">x_account_id</span><span class="o">=</span>wrong_or_missing_api_token
+<pre class="highlight shell"><code>  http POST http://hpp-domain/payment <span class="nv">x_account_id</span><span class="o">=</span>wrong_or_missing_api_token
 </code></pre>
 
 <blockquote>
 <p>Example response</p>
 </blockquote>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"invalid"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-          <h2 id="creating-payment">Creating payment</h2>
-
+          <h2 id='creating-payment'>Creating payment</h2>
 <p>In order to start HPP payment flow merchant shop needs to make payment
 creation request. This request expects number of arguments that describe
 payment details:</p>
-
-<h3 id="input-params">Input Params</h3>
-
+<h3 id='input-params'>Input Params</h3>
 <table><thead>
 <tr>
 <th>key</th>
@@ -265,9 +279,7 @@ generally should not be used to update payment status in merchant backend.
 These redirects can be tampered with by user, so secure way for receiving
 payment status update is to setup callback url which is called by the gateway
 itself.</p>
-
-<h3 id="response">Response</h3>
-
+<h3 id='response'>Response</h3>
 <p>If successfully created HTTP 201 code should be expected. Returned token is
 payment identifier, which is used to finalize payment in communication with
 user.</p>
@@ -289,13 +301,12 @@ user.</p>
 </tbody></table>
 
 <p>User browser should be redirected to <code class="prettyprint">http://hpp-domain/payments/#{token}</code></p>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5c0f422f303ebecc56c92eda6517fe2e"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-          <h1 id="webhooks">Webhooks</h1>
-
+          <h1 id='webhooks'>Webhooks</h1>
 <p>You can define webhooks for your account in a Merchant Management Panel, after
 that your shop can be notified about certain events. You can specify separate
 URL for each event and channel. Regardless of event type payload structure is the
@@ -303,9 +314,7 @@ same.</p>
 
 <p>Notification will be send as <code class="prettyprint">HTTP POST</code> request to the defined endpoint. Body
 is JSON.</p>
-
-<h3 id="payload-description">Payload description</h3>
-
+<h3 id='payload-description'>Payload description</h3>
 <table><thead>
 <tr>
 <th>key</th>
@@ -339,7 +348,7 @@ is JSON.</p>
 <td>date represented as ISO8601 string</td>
 </tr>
 </tbody></table>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"304"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"event_type"</span><span class="p">:</span><span class="s2">"payment.statusChanged.approved.506540696413405817"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"source_type"</span><span class="p">:</span><span class="s2">"payment"</span><span class="p">,</span><span class="w">
@@ -347,9 +356,7 @@ is JSON.</p>
   </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2016-09-20T11:25:56.694252787+02:00"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-
-<h3 id="event_type-key"><code class="prettyprint">event_type</code> key</h3>
-
+<h3 id='code-classprettyprintevent_typecode-key'><code class="prettyprint">event_type</code> key</h3>
 <p>It has 4 parts devided by <code class="prettyprint">.</code> mark.</p>
 
 <ol>
@@ -389,8 +396,2889 @@ is JSON.</p>
 </ul></li>
 </ul>
 
+          <h1 id='helios-api'>Helios API</h1>
+          <h2 id='authentication'>Authentication</h2>
+<p>The helios api uses Api-Tokens for Authentication. Api-Tokens can generated and revoked at any time using the Merchant-UI or the API.</p>
+
+<p>To Authenticate add the <code class="prettyprint">X-Token</code> field to the requests Header:</p>
+
+<p><code class="prettyprint">X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:YourTokenPassWordSecr3t.</code></p>
+
+<p><aside class="notice">You must replace <code class="prettyprint">YourTokenPassWordSecr3t.</code>, with a the password provioded when creating a token via the Merchant-UI or API. </aside></p>
+
+<p>To test Authentication you can use</p>
+
+<p><code class="prettyprint">GET /channels</code></p>
+<pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span>  https://test.dp.ag/channels
+</code></pre>
+
+<blockquote>
+<p>=&gt; 200 OK</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"merchant_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2100-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-13T15:33:31.987638Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-13T15:33:31.987638Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>In case of failure</p>
+
+<p>=&gt; 401 Unauthorized</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">1020</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"msg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h2 id='api-tokens'>API Tokens</h2>
+<p>Api-Tokens are used to Authenticate your access to the gateway. Both HPP integration and API integration are using API tokens.</p>
+
+<p>The Auth token get concatenated of the tokens <code class="prettyprint">uuid:password</code>.</p>
+
+<p><code class="prettyprint">X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:YOURSuperSecr3tPassword.</code></p>
+
+<p><aside class="notice">When Createing a token, you have to remember the password to use the token. A tokens password can not be retrieved later.</aside></p>
+<h3 id='get-a-list-of-api-tokens'>Get a list of Api-Tokens</h3>
+<p><code class="prettyprint">GET /api_tokens</code></p>
+<pre class="highlight shell"><code><span class="c"># Get the list of API-Tokens</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span>  https://test.dp.ag/api_tokens
+
+<span class="gp">=&gt; </span>200 OK
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"uuid"</span>: <span class="s2">"d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"one"</span>,
+    <span class="s2">"created_at"</span>: <span class="s2">"2015-04-13T15:33:32.010455Z"</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre>
+<h3 id='create-an-api-token'>Create an API-Token</h3>
+<p>To create an Api-Token Post to using the following fields:</p>
+
+<p><p> ApiToken </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>name</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>The ApiTokens&rsquo;s name as displayed within the Merchant-UI</td>
+        <td>min: 3, max: 64</td>
+      </tr></p>
+
+<p><tr>
+        <td>password</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>password required for api token generation</td>
+        <td>pattern: ^[a-zA-Z\d!@#%-.\$^&amp;*()_+\=]{12,64}$</td>
+      </tr>
+      </table></p>
+
+<p><code class="prettyprint">POST /api_tokens</code></p>
+<pre class="highlight shell"><code><span class="c"># Create an API-Token</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{"name":"two","password":"someThinGVeYS3cet.andveryveryverylonG"}'</span> https://test.dp.ag/api_tokens
+
+<span class="gp">=&gt; </span>201 Created
+
+<span class="o">{</span>
+  <span class="s2">"uuid"</span>: <span class="s2">"0289bbe2-dbfb-4fee-9dfd-ecb1090496fb"</span>,
+  <span class="s2">"name"</span>: <span class="s2">"two"</span>,
+  <span class="s2">"created_at"</span>: <span class="s2">"2015-04-15T15:54:14.992586Z"</span>
+<span class="o">}</span>
+</code></pre>
+<h3 id='delete-an-api-token'>Delete an API-Token</h3>
+<p><code class="prettyprint">DELETE /api_tokens/{uuid}</code></p>
+<pre class="highlight shell"><code><span class="c"># Delete an API-Tokens</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -X DELETE  https://test.dp.ag/api_tokens/0289bbe2-dbfb-4fee-9dfd-ecb1090496fb
+
+<span class="gp">=&gt; </span>204 No Content
+</code></pre>
+
+          <h2 id='urls'>URLs</h2><h3 id='live-url'>Live URL</h3>
+<p><code class="prettyprint">https://prod.dp.ag/</code></p>
+<h3 id='sandbox-url'>Sandbox URL</h3>
+<p><code class="prettyprint">https://test.dp.ag/</code></p>
+
+          <h2 id='pagination'>Pagination</h2>
+<p>All List fetched from the API are paginated. The total number of records for a resouce is retured as HTTP Header <code class="prettyprint">X-Records</code></p>
+
+<p><code class="prettyprint">X-Records 1005</code></p>
+
+<p>This allows you in combination with the <code class="prettyprint">per_page</code> value to easily calculate the number of pages.</p>
+
+<p>The following option are available as query params to all list.</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>the page number (defaults to 1)</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>the number of records returned within each page (defaults to 50, max 200)</td>
+</tr>
+</tbody></table>
+
+<p><code class="prettyprint">GET /payments?page=5&amp;per_page=100</code></p>
+
+          <h2 id='payments'>Payments</h2>
+<p>Payments are the main Entity within the helios API.</p>
+
+<p>Payments are classified by a Type and a Method. A Payments Type indicates the the direction of the money flow.
+The following Types are supported:</p>
+
+<table><thead>
+<tr>
+<th>Types</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>charge</td>
+<td>The Customer gets billed with the requeted Amount and gets credited to the Merchants Account.</td>
+</tr>
+<tr>
+<td>refund</td>
+<td>Refunds allow to return already billed amounts to Customers. The amount can be fully or partially refunded.</td>
+</tr>
+<tr>
+<td>chargeback</td>
+<td>Chargebacks are a special type as they cannot be triggered by the merchant. Chargebacks occur if a customer disputes to an item of his Credit-Card bill at his issuing bank and the bank requests a chargeback. In this case, the amount is automatically refunded to the customers Credit-Card account and deducted from your merchant account.</td>
+</tr>
+<tr>
+<td>authorize</td>
+<td>With authorize, you can ensure that a Credit-Card is valid and reserve the desired amount on the card. After settling the transaction (e.g. shipping the goods), you can then capture the amount. The customer will not be billed until the capture has taken place, but the amount is reserved and the customer’s Credit-Card limit is reduced. Authorizes will automatically be cancelled after a certain timeframe, most likely one week.</td>
+</tr>
+<tr>
+<td>capture</td>
+<td>Capture settles a transaction which has been authorized before. Do this when you are shipping goods, for example. A capture can only be used after an authorize on the same transaction.</td>
+</tr>
+<tr>
+<td>void</td>
+<td>Void undos an other Payment.</td>
+</tr>
+</tbody></table>
+
+<p>A Payments Method indicates the Monetary Source for a Payment eg. a Credit-Card or a Bank-Account. The following Methods are supported:</p>
+
+<table><thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Workflow</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>credit_card</td>
+<td>A Credit-Card</td>
+<td>sync</td>
+</tr>
+<tr>
+<td>credit_card_3ds</td>
+<td>A Credit-Card using 3d-Secure.</td>
+<td>redirect</td>
+</tr>
+<tr>
+<td>sepa</td>
+<td>A SEPA Bank Account.</td>
+<td>async</td>
+</tr>
+<tr>
+<td>eps</td>
+<td>Eps is an Austrian Payment Method where the Customer authorizes the payment.</td>
+<td>redirect</td>
+</tr>
+<tr>
+<td>sofort</td>
+<td>Sofort is a Payment Method where the Customer authorizes the payment by logging in and providing a TAN through the Sofortbanking website.</td>
+<td>redirect</td>
+</tr>
+<tr>
+<td>giro</td>
+<td>Giro is a Payment Method where the Customer authorizes the payment.</td>
+<td>redirect</td>
+</tr>
+<tr>
+<td>ideal</td>
+<td>iDeal is a Nederlands Payment Method where the Customer authorizes the payment.</td>
+<td>redirect</td>
+</tr>
+<tr>
+<td>elv</td>
+<td>elv is a german Payment Method where the Customers Bank Account gets billed.</td>
+<td>async</td>
+</tr>
+<tr>
+<td>pay_in_advance</td>
+<td>The Customer transfers the money using a given WireRefIf, helios tracks the aarival of the funds</td>
+<td>async</td>
+</tr>
+<tr>
+<td>pay_on_invoice</td>
+<td>The Merchants send out the goods and an Invoice, the Customer transfers the money using a given WireRefIf, helios tracks the aarival of the funds</td>
+<td>async</td>
+</tr>
+<tr>
+<td>pay_on_delivery</td>
+<td>The Customer pays the delivery company.</td>
+<td>none</td>
+</tr>
+</tbody></table>
+<h2 id='payment-workflows'>Payment workflows</h2>
+<p>Payments have one of the following workflows:</p>
+
+<ul>
+<li>sync the result of Payment is immediate available.</li>
+<li>redirect the customers needs to be redirected to a third party to complete the Payment.</li>
+<li>async the result of Payment is unclear and will change later, will after always be pending, before reacing a final status.</li>
+</ul>
+<h2 id='payment-statuses'>Payment Statuses</h2>
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>approved</td>
+<td>Payment was approved by acquirer and is successful.</td>
+</tr>
+<tr>
+<td>declined</td>
+<td>Payment was declined by acquirer or risk management.</td>
+</tr>
+<tr>
+<td>error</td>
+<td>An error has occurred while negotiating with the acquirer. As the trans- action could have taken place successfully, a reconcile is needed to verify the transaction.</td>
+</tr>
+<tr>
+<td>pending</td>
+<td>The outcome of the Payment could not be determined, either async workflow or eg. a timeout with the acquirer. Payment status will change, so make a reconcile after a certain time frame.</td>
+</tr>
+<tr>
+<td>partially_refunded</td>
+<td>Once an approved Payment is partially refunded the status changes to partially_refunded.</td>
+</tr>
+<tr>
+<td>refunded</td>
+<td>Once an approved Payment is fully refunded the status changes to refunded.</td>
+</tr>
+<tr>
+<td>voided</td>
+<td>Once an approved Payment is voided the status changes to voided.</td>
+</tr>
+<tr>
+<td>chargebacked</td>
+<td>Once a chargebacked gets created for a Payment, the status changes to chargebacked.</td>
+</tr>
+</tbody></table>
+<h2 id='payment-groups'>Payment Groups</h2>
+<p>Payments are organized in groups, each Payment has a <code class="prettyprint">root_id</code> and a <code class="prettyprint">ref_id</code> which may be null. All following payments within a workflow will have the <code class="prettyprint">root_id</code> of the intitail Paymment.</p>
+<h4 id='consider-the-following-workflow'>consider the following workflow</h4>
+<ol>
+<li>Authrorze a Credit-Card</li>
+<li>Capture (<code class="prettyprint">root_id</code> and <code class="prettyprint">ref_id</code> are the <code class="prettyprint">authozize.id</code>)</li>
+<li>Partillay Refund the Capture (<code class="prettyprint">root_id</code> is the <code class="prettyprint">authozize.id</code> and <code class="prettyprint">ref_id</code> is <code class="prettyprint">capture.id</code>)</li>
+</ol>
+<h2 id='getting-a-list-of-payments'>Getting a List of Payments</h2>
+<p><code class="prettyprint">GET /payments</code></p>
+
+<p>The Payments List can be filtered using query params eg.</p>
+
+<p><code class="prettyprint">GET /payments?currency=EUR&amp;status=approved</code></p>
+
+<p>Like all list the Payments list is <a href="#pagination">paginated</a>.</p>
+
+<p>The following filters are supported.</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>channel_id</td>
+<td>channel_id equals value <code class="prettyprint">channel_id=1478523</code></td>
+</tr>
+<tr>
+<td>currency</td>
+<td>currency equals value  <code class="prettyprint">currency=EUR</code></td>
+</tr>
+<tr>
+<td>amount</td>
+<td>amount equals value <code class="prettyprint">amount=95800</code></td>
+</tr>
+<tr>
+<td>amount_lt</td>
+<td>amount is less then value <code class="prettyprint">amount_lt=10000</code></td>
+</tr>
+<tr>
+<td>amount_lteq</td>
+<td>amount is less then or equal to value <code class="prettyprint">amount_lteq=10000</code></td>
+</tr>
+<tr>
+<td>amount_gt</td>
+<td>amount is greater then value <code class="prettyprint">amount_lt=5000</code></td>
+</tr>
+<tr>
+<td>amount_gteq</td>
+<td>amount is greater then or equal to value <code class="prettyprint">amount_gteq=5000</code></td>
+</tr>
+<tr>
+<td>status</td>
+<td>status equals <code class="prettyprint">status=approved</code></td>
+</tr>
+<tr>
+<td>meta[key]</td>
+<td>a meta value equals <code class="prettyprint">meta[order_id]=147777</code></td>
+</tr>
+<tr>
+<td>type</td>
+<td>type equals value <code class="prettyprint">type=charge</code></td>
+</tr>
+<tr>
+<td>method</td>
+<td>methods equals value <code class="prettyprint">method=credit_card</code></td>
+</tr>
+<tr>
+<td>billing_data[key]</td>
+<td>billing_data value equals <code class="prettyprint">billing_data[card_brand]=Visa</code></td>
+</tr>
+<tr>
+<td>customer_info[key]</td>
+<td>customer_info value equals <code class="prettyprint">customer_info[ip]=1.2.3.4</code></td>
+</tr>
+<tr>
+<td>types</td>
+<td>type equals one of the prvided values <code class="prettyprint">types[]=charge&amp;types[]=refund</code></td>
+</tr>
+<tr>
+<td>methods</td>
+<td>methods equals one of the prvided values <code class="prettyprint">methods[]=credit_card&amp;methods[]=credit_card_3ds</code></td>
+</tr>
+<tr>
+<td>statuses</td>
+<td>status equals one of the prvided values <code class="prettyprint">statuses[]=approved&amp;statuses[]=pending</code></td>
+</tr>
+<tr>
+<td>currencies</td>
+<td>currencies  equals one of the prvided values <code class="prettyprint">currencies[]=EUR&amp;currencies[]=USD</code></td>
+</tr>
+<tr>
+<td>created_date_gt</td>
+<td>payments was created after provided date<code class="prettyprint">created_date_gt=2015-01-01</code></td>
+</tr>
+<tr>
+<td>created_date_gteq</td>
+<td>payments was created at provided date or later <code class="prettyprint">created_date_gteq=2015-01-01</code></td>
+</tr>
+<tr>
+<td>created_date_lt</td>
+<td>payments was created predeceasing provided date <code class="prettyprint">created_date_lt=2015-01-01</code></td>
+</tr>
+<tr>
+<td>created_date_lteq</td>
+<td>payments was created at or predeceasing to provided date <code class="prettyprint">created_date_lteq=2015-01-01</code></td>
+</tr>
+</tbody></table>
+<h3 id='orderingsorting'>Ordering/Sorting</h3>
+<p>The Payments List can be ordered using the <code class="prettyprint">order_by</code> query params.</p>
+
+<p><code class="prettyprint">GET /payments?order_by=amount+DESC</code></p>
+
+<p>The default orderiing od the Payments List is <code class="prettyprint">created_at+DESC</code>.</p>
+
+<p>The following options ar available for ordered.</p>
+
+<p><code class="prettyprint">id</code>, <code class="prettyprint">amount</code>, <code class="prettyprint">currency</code>, <code class="prettyprint">status</code>, <code class="prettyprint">created_at</code>, <code class="prettyprint">updated_at</code></p>
+
+<p>The direction of the ordering can be added to the param using +. You can also combine ordering options using a comma.</p>
+
+<p><code class="prettyprint">GET /payments?order_by=amount+DESC,currency+ASC</code></p>
+<pre class="highlight shell"><code><span class="c"># Get a List of Payments</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> https://test.dp.ag/payments
+</code></pre>
+
+<blockquote>
+<p>=&gt; 200</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+</span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550059965055832"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887227</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bee53b55-7281-4517-45a2-09d84e4a70e1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550058245391191"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887226</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b043daa3-69de-4b14-4ade-42827d69f490"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre>
+
+          <h2 id='errors-classes'>Errors Classes</h2>
+<p>The errors retured fomr the helios API are grouped in classes.</p>
+
+<table><thead>
+<tr>
+<th>Error Code Range</th>
+<th>Group</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000&hellip;1999</td>
+<td>System Error</td>
+<td>A System Error within the helios gateway.</td>
+</tr>
+<tr>
+<td>2000&hellip;2999</td>
+<td>Parameter Error</td>
+<td>One or more parameter provided are missing or invalid.</td>
+</tr>
+<tr>
+<td>3000&hellip;3999</td>
+<td>Workflow Error</td>
+<td>The requested workflow is not possible for some reason.</td>
+</tr>
+<tr>
+<td>4000&hellip;4999</td>
+<td>NotFound Error</td>
+<td>The requested resource does not exist.</td>
+</tr>
+<tr>
+<td>5000&hellip;5999</td>
+<td>Risc Error</td>
+<td>The payment was declined by the Risc Manegement System.</td>
+</tr>
+<tr>
+<td>6000&hellip;6999</td>
+<td>Processing Error</td>
+<td>The payment was declined.</td>
+</tr>
+</tbody></table>
+
+<!--
+# Errors
+
+
+
+The helios API uses the following error codes:
+
+
+Error Code | Meaning
+---------- | -------
+1000| System Error
+1010| Maintenance Error
+1020| Authentication Error
+1030| Configuration Error
+2000| Parameter Error
+3000| Workflow Error
+3001| Timeout Error
+4000| NotFound Error
+5000| Risc Error
+5010| Blacklist Error
+6000| Processing Error
+
+-->
+
+          <h2 id='authorize-a-credit-card'>Authorize a Credit-Card</h2>
+<p>With authorize, you can confirm that a Credit-Card is valid and reserve the desired amount on the card.
+After settling the transaction (e.g. shipping the goods), you can then capture the amount. The customer will not be billed until the capture has taken place, but the amount is reserved and the customer’s Credit-Card limit is reduced. Authorizes will automatically be cancelled after a certain timeframe, most likely one week.</p>
+
+<p>For a typical e-commerce application it is recommended to authorize the amount on incoming orders and capture it when shipping the goods. If you are selling services or non-tangible goods, you can use the sale transaction, which combines authorize and capture.</p>
+
+<p>If you chose not to serve the customer, consider to void the authorize to unfreeze the amount on the client’s Credit-Card.</p>
+
+<p>Authorize Payments have a <a href="#payment-workflows">sync workflow</a></p>
+<h3 id='create-an-authorize'>Create an Authorize</h3>
+<p><code class="prettyprint">POST /payments/authorize/credit_card</code></p>
+<pre class="highlight shell"><code><span class="c"># Authorize a Credit Card</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 880058,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "a5674886-e861-46f7-4aa2-ba58f8201047"
+  },
+  "credit_card": {
+    "number": "4200000000000000",
+    "holder": "Manfred Muster",
+    "cvc": "147",
+    "expiration_year": 2022,
+    "expiration_month": 7
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/authorize/credit_card
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135489925549130550"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorize"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">880058</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a5674886-e861-46f7-4aa2-ba58f8201047"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:34:17.764461Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:34:17.764461Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3634</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:34:17.781176Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:34:17.781176Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+
+<p><p> authorize a credit card for later capture </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>id of channel used for authorizing capture</td>
+        <td>min: 1</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>currency</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>authorized credit card data</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card holder</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_month]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration month</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_year]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration year</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card number</td>
+        <td>pattern: ^\d{12,16}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[cvc]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[statement]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>information about customer</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer IP address</td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer email</td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer first name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer last name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer phone number</td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer date of birth</td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>billing address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>shipping address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='authorize-a-credit-card-3d-secure'>Authorize a Credit-Card 3d-Secure</h2>
+<p>Authorize 3d-Secure Payments basically have the same request as standard <a href="#authorize-a-credit-card">authorize</a> Payments.
+Authorize 3d-Secure  Payments have a <a href="#payment-workflows">redirect workflow</a></p>
+<h3 id='create-an-authorize-3d-secure'>Create an Authorize 3d-Secure</h3>
+<p><code class="prettyprint">POST /payments/authorize/credit_card_3d_secure</code></p>
+<pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
+  "amount": 881353,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "6b4845ee-9dfd-4af0-4606-d4830dd00f1d"
+  },
+  "credit_card": {
+    "number": "4200000000000000",
+    "holder": "Manfred Muster",
+    "cvc": "147",
+    "expiration_year": 2022,
+    "expiration_month": 7
+  },
+  "urls":{
+    "success": "https:/example.com/success",
+    "failure": "https:/example.com/failure",
+    "cancel": "https:/example.com/cancel"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/authorize/credit_card_3d_secure
+
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135502517755708238"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card_3ds"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authorize"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">881353</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b4845ee-9dfd-4af0-4606-d4830dd00f1d"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:59:18.872807Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:59:18.872807Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://test.dp.ag/redirect/acquirer/4eede1be-1a88-4b34-adf5-f81ed5d7734d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3643</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:59:18.891673Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:59:18.891673Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p><p> authorize a credit card for later capture using 3d Secure </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>id of channel used for authorizing capture</td>
+        <td>min: 1</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>authorized credit card data</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card holder</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_month]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration month</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_year]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration year</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card number</td>
+        <td>pattern: ^\d{12,16}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[cvc]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[statement]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>information about customer</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer IP address</td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer email</td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer first name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer last name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer phone number</td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer date of birth</td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>billing address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>shipping address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[notification]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[success]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[failure]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[cancel]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='capture'>Capture</h2>
+<p>Capture settles a Payment which has been authorized before.</p>
+
+<p>Do this when you are shipping goods, for example. A capture can only be used after an authorize on the same transaction.</p>
+<h3 id='create-a-capture'>Create a Capture</h3>
+<p><code class="prettyprint">POST /payments/capture/{authorize.Id}</code></p>
+<pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{}'</span> https://test.dp.ag/payments/capture/135493677857375045
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135493679199552326"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135493677857375045"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135493677857375045"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"capture"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">880505</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:41:45.234064Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T10:41:45.234064Z"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p><p> capture a previously authorized credit card </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>No</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='charge-a-credit-card'>Charge a Credit-Card</h2>
+<p>Charge a Credit-Card combines authorize and capture into one step.
+Using a Charge , the amount is immediately billed to the customer’s Credit-Card. It can be reversed via a void Payment on the same day of the Payment. Use sale Payments, if you are e.g. selling non-tangible goods or services.</p>
+<h3 id='create-a-charge'>Create a Charge</h3>
+<p><code class="prettyprint">POST /payments/charge/credit_card</code></p>
+<pre class="highlight shell"><code><span class="c"># Charge a Credit Card</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 880058,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "a5674886-e861-46f7-4aa2-ba58f8201047"
+  },
+  "credit_card": {
+    "number": "4200000000000000",
+    "holder": "Manfred Muster",
+    "cvc": "147",
+    "expiration_year": 2022,
+    "expiration_month": 7
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/charge/credit_card
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135504763931329360"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">880058</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a5674886-e861-46f7-4aa2-ba58f8201047"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:03:46.637878Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:03:46.637878Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3645</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:03:46.651913Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:03:46.651913Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p><p> charge a credit card </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>id of channel used for authorizing capture</td>
+        <td>min: 1</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>charged credit card data</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card holder</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_month]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration month</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_year]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration year</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card number</td>
+        <td>pattern: ^\d{12,16}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[cvc]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[statement]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>information about customer</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer IP address</td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer email</td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer first name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer last name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer phone number</td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer date of birth</td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>billing address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>shipping address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='charge-a-credit-card-3d-secure'>Charge a Credit-Card 3d-Secure</h2>
+<p>Charge 3d-Secure Payments basically have the same request as standard <a href="#charge-a-credit-card">charge</a> Payments.
+Charge 3d-Secure  Payments have a <a href="#payment-workflows">redirect workflow</a></p>
+<h3 id='create-an-authorize-3d-secure'>Create an Authorize 3d-Secure</h3>
+<p><code class="prettyprint">POST /payments/charge/credit_card_3d_secure</code></p>
+<pre class="highlight shell"><code><span class="c"># Charge a Credit-Card usign 3D-Secure</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
+  "amount": 881353,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "6b4845ee-9dfd-4af0-4606-d4830dd00f1d"
+  },
+  "credit_card": {
+    "number": "4200000000000000",
+    "holder": "Manfred Muster",
+    "cvc": "147",
+    "expiration_year": 2022,
+    "expiration_month": 7
+  },
+  "urls":{
+    "success": "https:/example.com/success",
+    "failure": "https:/example.com/failure",
+    "cancel": "https:/example.com/cancel"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/charge/credit_card_3d_secure
+
+</code></pre>
+
+<blockquote>
+<p>=&gt;</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135508950652027729"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card_3ds"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">881353</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6b4845ee-9dfd-4af0-4606-d4830dd00f1d"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:12:05.734436Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:12:05.734436Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://apinginx:9000/redirect/acquirer/74912fa2-9dd9-4249-b959-fb30cfafa813"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3646</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:12:05.74957Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:12:05.74957Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p><p> charge a credit card using 3d Secure </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>id of channel used for authorizing capture</td>
+        <td>min: 1</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>charged credit card data</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card holder</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_month]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration month</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[expiration_year]</td>
+        <td>integer</td>
+        <td>No</td>
+        <td>credit card expiration year</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>credit card number</td>
+        <td>pattern: ^\d{12,16}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[cvc]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>credit_card[statement]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>information about customer</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer IP address</td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer email</td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer first name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer last name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer phone number</td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer date of birth</td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>billing address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td>shipping address</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[notification]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[success]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[failure]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[cancel]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='charge-sepa'>Charge SEPA</h2>
+<p>Charge SEPA is a bank account transfer Payment. The money will be debited directly from the customer’s bank account.</p>
+
+<p>SEPA Payments have a <a href="#payment-workflows">async workflow</a></p>
+<h3 id='create-a-sepa-charge'>create a SEPA Charge</h3>
+<p><code class="prettyprint">POST /payments/charge/sepa</code></p>
+<pre class="highlight shell"><code><span class="c"># Charge Sepa</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 883282,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "54c1b046-1f06-4d1c-4af3-53c6ab0222c0"
+  },
+  "sepa": {
+    "iban": " DE89370400440532013000",
+    "bic": "COBADEFFXXX"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/charge/sepa
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135518305862550356"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sepa"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">883282</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"54c1b046-1f06-4d1c-4af3-53c6ab0222c0"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"bic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"COBADEFFXXX"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"iban"</span><span class="p">:</span><span class="w"> </span><span class="s2">" DE8 9370 xxxx xxxx 3 000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:30:40.961399Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:30:40.961399Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3649</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:30:40.976887Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:30:40.976887Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p><p> charge a sepa account </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>integer</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>sepa</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>sepa[iban]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>sepa[bic]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>sepa[statement]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>sepa[mandate]</td>
+        <td>object</td>
+        <td>No</td>
+        <td>key value pairs</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer IP address</td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer email</td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer first name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer last name</td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer phone number</td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>customer date of birth</td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='charge-elv'>Charge ELV</h2>
+<p>ELV is a bank account transfer Payment. The money will be debited directly from the customer’s bank account.</p>
+
+<p>ELV Payments have a <a href="#payment-workflows">async workflow</a></p>
+<h3 id='create-an-elv-charge'>Create an ELV Charge</h3>
+<p><code class="prettyprint">POST /payments/charge/elv</code></p>
+<pre class="highlight shell"><code><span class="c"># Charge Elv</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 883756,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "8cb55475-d0e3-4362-477e-5dc11754936d"
+  },
+  "bank_account": {
+    "holder": "Manfred Muster",
+    "account_number": "1234567899",
+    "routing_number": "10050000"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}
+'</span> https://test.dp.ag/payments/charge/elv
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135521365749924694"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"elv"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">883756</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8cb55475-d0e3-4362-477e-5dc11754936d"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"account_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxx xxxx 7899"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"routing_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10050000"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:36:45.729527Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:36:45.729527Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3651</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:36:45.743152Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T11:36:45.743152Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+
+          <h2 id='charge-eps'>Charge EPS</h2>
+<p>EPS is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with an Austrian Bank Account.</p>
+
+<p><code class="prettyprint">POST /payments/charge/eps</code></p>
+<h3 id='create-an-eps-charge'>Create an EPS Charge</h3><pre class="highlight shell"><code><span class="c"># Create an EPS Charge</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 889405,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "a5236bd2-4748-4376-4145-d9f1ce767d62"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  }
+}'</span> https://test.dp.ag/payments/charge/eps
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135569671045776221"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eps"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">889405</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a5236bd2-4748-4376-4145-d9f1ce767d62"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:12:44.168772Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:12:44.168772Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://test.dp.ag/redirect/acquirer/0a840ae3-7a33-4a5b-9f68-79903ea7990e"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h2 id='charge-sofort'>Charge Sofort</h2>
+<p>Sofort or Sofortüberweisung is a Payment Methods provided by <a href="https://www.sofort.com">SOFORT AG</a>.
+Sofort is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a Bank Account in Germany and some other Countries.</p>
+
+<p><code class="prettyprint">POST  /payments/charge/sofort</code></p>
+<pre class="highlight shell"><code><span class="c"># Creata a Sofort Charge</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 889873,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "d35b52b5-a4b7-41c4-7963-7fc9e026d6c4"
+  },
+  "customer_info": {
+    "first_name": "Manfred",
+    "ip": "1.1.1.1",
+    "last_name": "Man"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "descriptor": "Order 123"
+}'</span> https://test.dp.ag/payments/charge/sofort
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135573104276538207"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sofort"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">889873</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d35b52b5-a4b7-41c4-7963-7fc9e026d6c4"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Man"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:19:33.44167Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:19:33.44167Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://test.dp.ag/xredirect/acquirer/d298a035-6009-4e25-bd1c-d53c54bcddda"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3658</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:19:33.454793Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:19:33.454793Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h2 id='charge-giro'>Charge Giro</h2>
+<p>Giro or GiroPay is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with an German Bank Account.</p>
+
+<p><code class="prettyprint">POST /payments/charge/giro</code></p>
+<h3 id='create-an-grio-charge'>Create an Grio Charge</h3><pre class="highlight shell"><code><span class="c"># Create a Giro Charge</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 890575,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "24e3e2f3-c55c-4928-6e0d-6cf772a434cd"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  }
+}'</span> https://test.dp.ag/payments/charge/giro
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135578150653395808"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"giro"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">890575</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"24e3e2f3-c55c-4928-6e0d-6cf772a434cd"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:29:35.016819Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:29:35.016819Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://test.dp.ag/redirect/acquirer/f1d3fe26-7faf-4ad5-83bf-aa8041039ce8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3659</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:29:35.032574Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:29:35.032574Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h2 id='charge-ideal'>Charge Ideal</h2>
+<p>Ideal or ideal is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a nederlands Bank Account.</p>
+
+<p><code class="prettyprint">POST /payments/charge/ideal</code></p>
+<h3 id='create-an-grio-charge'>Create an Grio Charge</h3><pre class="highlight shell"><code><span class="c"># Create an iDeal Charge</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
+  "amount": 890811,
+  "currency": "EUR",
+  "meta": {
+    "order_id": "8ccffaf2-c6b9-4456-6c87-7fa6d6fffdd4"
+  },
+  "customer_info": {
+    "ip": "1.1.1.1"
+  },
+  "billing_address": {
+    "first_name": "Manfred",
+    "last_name": "Testing",
+    "line1": "Test str. 1",
+    "zip_code": "12345",
+    "city": "Berlin",
+    "country": "DE"
+  },
+  "bank_account": {
+    "iban": "NL18ABNA0484869868",
+    "bic": "INGBNL2A"
+  }
+}'</span> https://test.dp.ag/payments/charge/ideal
+</code></pre>
+
+<blockquote>
+<p>=&gt; 201</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135580660457800547"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ideal"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">890811</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8ccffaf2-c6b9-4456-6c87-7fa6d6fffdd4"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"Bic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INGBNL2A"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bank_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"iban"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NL18 ABNA xxxx xxxx 98 68"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:34:34.20881Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:34:34.20881Z"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://apinginx:9000/redirect/acquirer/81b7960b-d5e8-4d7a-b2e3-e5919137e49d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3662</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Testing"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test str. 1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"line2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berlin"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:34:34.222861Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T13:34:34.222861Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+          <h2 id='channels'>Channels</h2>
+<p>A Channel represents a use case of a merchant. A Channels is the Entity for which you will get an Invoice for
+, in case you want to receive different invoices for eg two differnt websites consider using a distinct channel for each of the websites.</p>
+
+<p>Each Channel can only have one Currency, but many payment Types and Methods.</p>
+
+<p>Usually the channel for a Payment get selected automatically by the gateway, if you want to use a Channel explicitly you can provide the <code class="prettyprint">channel_id</code> with a Payment request.</p>
+
+<p>Like all list the Channels list is <a href="#pagination">paginated</a>.</p>
+<h3 id='getting-a-list-of-channels'>Getting a List of Channels</h3>
+<p><code class="prettyprint">GET /channels</code></p>
+<pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> https://test.dp.ag/channels
+</code></pre>
+
+<blockquote>
+<p>=&gt; 200</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"merchant_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2100-01-01T00:00:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-13T15:33:31.987638Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-13T15:33:31.987638Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p><aside class="notice">Channels can not be created through the API, if you need more channels contacts support.</aside></p>
+
       </div>
       <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="curl">curl</a>
+          </div>
       </div>
     </div>
   </body>
