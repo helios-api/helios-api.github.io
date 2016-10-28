@@ -67,15 +67,15 @@
 
 <p><a title="HPP Integration Flow diagram" href="images/integration_flow.png"><img alt="HPP Integration Flow diagram" src="images/integration_flow.png" /></a></p>
 
-<p>Above diagram shows simplified communication with HPP that needs to be done by
+<p>The diagram above shows simplified communication with HPP that needs to be followed by
 merchant willing to use this service.</p>
 
 <p>All requests are following basic REST principles of designing API.</p>
 
           <h2 id='authentication'>Authentication</h2>
-<p>In order to use API requests need to contain merchant API token either
+<p>In order to use API requests need to contain merchant&rsquo;s API token either
 generated using Helios API or Merchant Panel. Lack of token or invalid token
-will result in HTTP code 401 and response.</p>
+will result in HTTP code 401 response.</p>
 
 <blockquote>
 <p>Example request</p>
@@ -274,14 +274,14 @@ payment details:</p>
 </tr>
 </tbody></table>
 
-<p>Please note that redirection urls are useful for finalizing flow, but
-generally should not be used to update payment status in merchant backend.
+<p>Please note that redirection urls are useful for finalizing the flow, but
+generally should not be used to update payment&rsquo;s status in merchant&rsquo;s backend.
 These redirects can be tampered with by user, so secure way for receiving
-payment status update is to setup callback url which is called by the gateway
+payment status update is to setup callback url which is made by the gateway
 itself.</p>
 <h3 id='response'>Response</h3>
-<p>If successfully created HTTP 201 code should be expected. Returned token is
-payment identifier, which is used to finalize payment in communication with
+<p>If successfully created HTTP 201 code should be expected. Returned token is the
+payment identifier, which is used to finalize payment in communication with the
 user.</p>
 
 <table><thead>
@@ -307,13 +307,9 @@ user.</p>
 </span></code></pre>
 
           <h1 id='webhooks'>Webhooks</h1>
-<p>You can define webhooks for your account in a Merchant Management Panel, after
-that your shop can be notified about certain events. You can specify separate
-URL for each event and channel. Regardless of event type payload structure is the
-same.</p>
+<p>You can define webhooks for your account in a Merchant Management Panel. After successful configuration your shop will be notified about events that take place in the Gateway. You can specify separate URLs for each event in a channel. The structure of the payload is the same for all event types.</p>
 
-<p>Notification will be send as <code class="prettyprint">HTTP POST</code> request to the defined endpoint. Body
-is JSON.</p>
+<p>Notification will be sent as <code class="prettyprint">HTTP POST</code> request to the defined endpoint. The body of the request is JSON.</p>
 <h3 id='payload-description'>Payload description</h3>
 <table><thead>
 <tr>
@@ -366,7 +362,7 @@ is JSON.</p>
 <li>Affected id</li>
 </ol>
 
-<p>eg. payment.statusChanged.approved.1234</p>
+<p>e.g. payment.statusChanged.approved.1234</p>
 
 <p>The possible values are:</p>
 
@@ -398,9 +394,9 @@ is JSON.</p>
 
           <h1 id='helios-api'>Helios API</h1>
           <h2 id='authentication'>Authentication</h2>
-<p>The helios api uses Api-Tokens for Authentication. Api-Tokens can generated and revoked at any time using the Merchant-UI or the API.</p>
+<p>The Helios api uses Api-Tokens for Authentication. Api-Tokens can be generated and revoked at any time using the Merchant-UI or the API.</p>
 
-<p>To Authenticate add the <code class="prettyprint">X-Token</code> field to the requests Header:</p>
+<p>To Authenticate add the <code class="prettyprint">X-Token</code> field to the request’s header:</p>
 
 <p><code class="prettyprint">X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:YourTokenPassWordSecr3t.</code></p>
 
@@ -444,7 +440,7 @@ is JSON.</p>
 </span></code></pre>
 
           <h2 id='api-tokens'>API Tokens</h2>
-<p>Api-Tokens are used to Authenticate your access to the gateway. Both HPP integration and API integration are using API tokens.</p>
+<p>Api-Tokens are used to Authenticate the access to the gateway. Both HPP integration and API integration are using API tokens.</p>
 
 <p>The Auth token get concatenated of the tokens <code class="prettyprint">uuid:password</code>.</p>
 
@@ -513,13 +509,13 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 <p><code class="prettyprint">https://test.dp.ag/</code></p>
 
           <h2 id='pagination'>Pagination</h2>
-<p>All List fetched from the API are paginated. The total number of records for a resouce is retured as HTTP Header <code class="prettyprint">X-Records</code></p>
+<p>All Lists fetched from the API are paginated. The total number of records for a resouce is retured as HTTP Header <code class="prettyprint">X-Records</code></p>
 
 <p><code class="prettyprint">X-Records 1005</code></p>
 
-<p>This allows you in combination with the <code class="prettyprint">per_page</code> value to easily calculate the number of pages.</p>
+<p>This allows the Merchant to manipulate the <code class="prettyprint">per_page</code> value and to easily calculate the number of pages.</p>
 
-<p>The following option are available as query params to all list.</p>
+<p>The following option are available as query params to all lists.</p>
 
 <table><thead>
 <tr>
@@ -577,7 +573,7 @@ The following Types are supported:</p>
 </tr>
 </tbody></table>
 
-<p>A Payments Method indicates the Monetary Source for a Payment eg. a Credit-Card or a Bank-Account. The following Methods are supported:</p>
+<p>A Payments Method indicates the Monetary Source for a Payment e.g. a Credit-Card or a Bank-Account. The following Methods are supported:</p>
 
 <table><thead>
 <tr>
@@ -643,12 +639,12 @@ The following Types are supported:</p>
 </tr>
 </tbody></table>
 <h2 id='payment-workflows'>Payment workflows</h2>
-<p>Payments have one of the following workflows:</p>
+<p>All transaction are handled according to one of the following flows:</p>
 
 <ul>
-<li>sync the result of Payment is immediate available.</li>
-<li>redirect the customers needs to be redirected to a third party to complete the Payment.</li>
-<li>async the result of Payment is unclear and will change later, will after always be pending, before reacing a final status.</li>
+<li>sync - Synchronous, the result of the transaction in available immediately</li>
+<li>redirect - The customer is redirected to a third party organisation to complete the transaction</li>
+<li>async - Asynchronous, the result of the transaction is available after the response from Acquiring bank is received.</li>
 </ul>
 <h2 id='payment-statuses'>Payment Statuses</h2>
 <table><thead>
@@ -944,12 +940,12 @@ Error Code | Meaning
 -->
 
           <h2 id='authorize-a-credit-card'>Authorize a Credit-Card</h2>
-<p>With authorize, you can confirm that a Credit-Card is valid and reserve the desired amount on the card.
-After settling the transaction (e.g. shipping the goods), you can then capture the amount. The customer will not be billed until the capture has taken place, but the amount is reserved and the customer’s Credit-Card limit is reduced. Authorizes will automatically be cancelled after a certain timeframe, most likely one week.</p>
+<p>With authorize, the Merchant can confirm that a Credit-Card is valid and reserve the desired amount on the card.
+After settling the transaction (e.g. shipping the goods), the Merchant can capture the funds. The customer will not be billed until the capture takes place, but the amount is reserved and the customer’s Credit-Card limit is reduced. Authorizes may be cancelled automatically.</p>
 
-<p>For a typical e-commerce application it is recommended to authorize the amount on incoming orders and capture it when shipping the goods. If you are selling services or non-tangible goods, you can use the sale transaction, which combines authorize and capture.</p>
+<p>For a typical e-commerce application it is recommended to authorize the amount on incoming orders and capture it when shipping the goods. If the Merchant is selling services or non-tangible goods, he can use the sale transaction, which combines authorize and capture.</p>
 
-<p>If you chose not to serve the customer, consider to void the authorize to unfreeze the amount on the client’s Credit-Card.</p>
+<p>If the Mechant choses not to serve the customer, consider to void the authorize to unfreeze the amount on the client’s Credit-Card.</p>
 
 <p>Authorize Payments have a <a href="#payment-workflows">sync workflow</a></p>
 <h3 id='create-an-authorize'>Create an Authorize</h3>
@@ -1317,8 +1313,8 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
       </table></p>
 
           <h2 id='authorize-a-credit-card-3d-secure'>Authorize a Credit-Card 3d-Secure</h2>
-<p>Authorize 3d-Secure Payments basically have the same request as standard <a href="#authorize-a-credit-card">authorize</a> Payments.
-Authorize 3d-Secure  Payments have a <a href="#payment-workflows">redirect workflow</a></p>
+<p>Authorize 3d-Secure Payments calls basically have the same parameters as standard <a href="#authorize-a-credit-card">authorize</a> Payments.
+Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect workflow</a></p>
 <h3 id='create-an-authorize-3d-secure'>Create an Authorize 3d-Secure</h3>
 <p><code class="prettyprint">POST /payments/authorize/credit_card_3d_secure</code></p>
 <pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
@@ -1786,8 +1782,8 @@ Authorize 3d-Secure  Payments have a <a href="#payment-workflows">redirect workf
       </table></p>
 
           <h2 id='charge-a-credit-card'>Charge a Credit-Card</h2>
-<p>Charge a Credit-Card combines authorize and capture into one step.
-Using a Charge , the amount is immediately billed to the customer’s Credit-Card. It can be reversed via a void Payment on the same day of the Payment. Use sale Payments, if you are e.g. selling non-tangible goods or services.</p>
+<p>Charge a Credit-Card call combines authorize and capture into one step.
+When using the Charge call, the amount is immediately billed to the customer’s Credit-Card. It can be reversed via a void Payment on the same day of the Payment.</p>
 <h3 id='create-a-charge'>Create a Charge</h3>
 <p><code class="prettyprint">POST /payments/charge/credit_card</code></p>
 <pre class="highlight shell"><code><span class="c"># Charge a Credit Card</span>
@@ -2912,7 +2908,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
       </table></p>
 
           <h2 id='charge-elv'>Charge ELV</h2>
-<p>ELV is a bank account transfer Payment. The money will be debited directly from the customer’s bank account.</p>
+<p>ELV is a bank account transfer type Payment. The money will be debited directly from the customer’s bank account.</p>
 
 <p>ELV Payments have a <a href="#payment-workflows">async workflow</a></p>
 <h3 id='create-an-elv-charge'>Create an ELV Charge</h3>
@@ -3033,7 +3029,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 
           <h2 id='charge-sofort'>Charge Sofort</h2>
 <p>Sofort or Sofortüberweisung is a Payment Methods provided by <a href="https://www.sofort.com">SOFORT AG</a>.
-Sofort is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a Bank Account in Germany and some other Countries.</p>
+Sofort is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers in most of the european countries.</p>
 
 <p><code class="prettyprint">POST  /payments/charge/sofort</code></p>
 <pre class="highlight shell"><code><span class="c"># Creata a Sofort Charge</span>
@@ -3168,7 +3164,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 </span></code></pre>
 
           <h2 id='charge-ideal'>Charge Ideal</h2>
-<p>Ideal or ideal is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a nederlands Bank Account.</p>
+<p>Ideal or ideal is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a dutch Bank Account.</p>
 
 <p><code class="prettyprint">POST /payments/charge/ideal</code></p>
 <h3 id='create-an-grio-charge'>Create an Grio Charge</h3><pre class="highlight shell"><code><span class="c"># Create an iDeal Charge</span>
@@ -3241,12 +3237,11 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 </span></code></pre>
 
           <h2 id='channels'>Channels</h2>
-<p>A Channel represents a use case of a merchant. A Channels is the Entity for which you will get an Invoice for
-, in case you want to receive different invoices for eg two differnt websites consider using a distinct channel for each of the websites.</p>
+<p>A Channel represents a use case of a merchant. A Channels is the Entity which Merchants receive invoices for usually. In case a Merchant wants to receive different invoices eg. for two separate websites he should consider using distinct channels for each of the websites.</p>
 
 <p>Each Channel can only have one Currency, but many payment Types and Methods.</p>
 
-<p>Usually the channel for a Payment get selected automatically by the gateway, if you want to use a Channel explicitly you can provide the <code class="prettyprint">channel_id</code> with a Payment request.</p>
+<p>Usually the channel for a Payment get selected automatically by the gateway. If a Merchant wants to use a Channel explicitly he can can provide the <code class="prettyprint">channel_id</code> with a Payment request.</p>
 
 <p>Like all list the Channels list is <a href="#pagination">paginated</a>.</p>
 <h3 id='getting-a-list-of-channels'>Getting a List of Channels</h3>
