@@ -71,6 +71,14 @@
 merchant willing to use this service.</p>
 
 <p>All requests are following basic REST principles of designing API.</p>
+<h2 id='urls'>URLs</h2>
+<p>Production Payment Page URL:</p>
+
+<p><code class="prettyprint">https://payment.dp.ag/</code></p>
+
+<p>Test Payment Page URL:</p>
+
+<p><code class="prettyprint">https://payment-stg.dp.ag/</code></p>
 
           <h2 id='authentication'>Authentication</h2>
 <p>In order to use API requests need to contain merchant&rsquo;s API token either
@@ -80,7 +88,8 @@ will result in HTTP code 401 response.</p>
 <blockquote>
 <p>Example request</p>
 </blockquote>
-<pre class="highlight shell"><code>  http POST http://hpp-domain/payment <span class="nv">x_account_id</span><span class="o">=</span>wrong_or_missing_api_token
+<pre class="highlight shell"><code>  curl -X POST -d <span class="s1">'{"x_account_id": "wrong_or_missing_api_token
+"}'</span> https://hpp-domain/payment
 </code></pre>
 
 <blockquote>
@@ -300,7 +309,7 @@ user.</p>
 </tr>
 </tbody></table>
 
-<p>User browser should be redirected to <code class="prettyprint">http://hpp-domain/payments/#{token}</code></p>
+<p>User browser should be redirected to <code class="prettyprint">https://hpp-domain/payments/#{token}</code></p>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5c0f422f303ebecc56c92eda6517fe2e"</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1025,10 +1034,10 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 <p><p> authorize a credit card for later capture </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
-        <td>integer</td>
+        <td>string</td>
         <td>No</td>
         <td>id of channel used for authorizing capture</td>
-        <td>min: 1</td>
+        <td>min: 1, max: 19</td>
       </tr></p>
 
 <p><tr>
@@ -1051,7 +1060,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -1067,7 +1076,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[holder]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card holder</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1075,7 +1084,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_month]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration month</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1083,7 +1092,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_year]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration year</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1091,7 +1100,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[number]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card number</td>
+        <td></td>
         <td>pattern: ^\d{12,16}$</td>
       </tr></p>
 
@@ -1123,7 +1132,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[ip]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer IP address</td>
+        <td></td>
         <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
       </tr></p>
 
@@ -1131,7 +1140,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[email]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer email</td>
+        <td></td>
         <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
       </tr></p>
 
@@ -1139,7 +1148,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[first_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer first name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1147,7 +1156,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[last_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer last name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1155,7 +1164,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[phone_number]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer phone number</td>
+        <td></td>
         <td>pattern: ^+?[()/\d-]{5,20}$</td>
       </tr></p>
 
@@ -1163,7 +1172,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[date_of_birth]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer date of birth</td>
+        <td></td>
         <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
       </tr></p>
 
@@ -1315,7 +1324,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
           <h2 id='authorize-a-credit-card-3d-secure'>Authorize a Credit-Card 3d-Secure</h2>
 <p>Authorize 3d-Secure Payments calls basically have the same parameters as standard <a href="#authorize-a-credit-card">authorize</a> Payments.
 Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect workflow</a></p>
-<h3 id='create-an-authorize-3d-secure'>Create an Authorize 3d-Secure</h3>
+<h3 id='create-a-3d-secure-authorize'>Create a 3d-Secure Authorize</h3>
 <p><code class="prettyprint">POST /payments/authorize/credit_card_3d_secure</code></p>
 <pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
   "amount": 881353,
@@ -1397,10 +1406,10 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
 <p><p> authorize a credit card for later capture using 3d Secure </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
-        <td>integer</td>
+        <td>string</td>
         <td>No</td>
         <td>id of channel used for authorizing capture</td>
-        <td>min: 1</td>
+        <td>min: 1, max: 19</td>
       </tr></p>
 
 <p><tr>
@@ -1423,7 +1432,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -1439,7 +1448,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>credit_card[holder]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card holder</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1447,7 +1456,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>credit_card[expiration_month]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration month</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1455,7 +1464,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>credit_card[expiration_year]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration year</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1463,7 +1472,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>credit_card[number]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card number</td>
+        <td></td>
         <td>pattern: ^\d{12,16}$</td>
       </tr></p>
 
@@ -1495,7 +1504,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[ip]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer IP address</td>
+        <td></td>
         <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
       </tr></p>
 
@@ -1503,7 +1512,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[email]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer email</td>
+        <td></td>
         <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
       </tr></p>
 
@@ -1511,7 +1520,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[first_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer first name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1519,7 +1528,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[last_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer last name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1527,7 +1536,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[phone_number]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer phone number</td>
+        <td></td>
         <td>pattern: ^+?[()/\d-]{5,20}$</td>
       </tr></p>
 
@@ -1535,7 +1544,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>customer_info[date_of_birth]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer date of birth</td>
+        <td></td>
         <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
       </tr></p>
 
@@ -1692,14 +1701,6 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
       </tr></p>
 
 <p><tr>
-        <td>urls[notification]</td>
-        <td>string</td>
-        <td>No</td>
-        <td></td>
-        <td></td>
-      </tr></p>
-
-<p><tr>
         <td>urls[success]</td>
         <td>string</td>
         <td>No</td>
@@ -1760,7 +1761,7 @@ Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -1860,10 +1861,10 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 <p><p> charge a credit card </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
-        <td>integer</td>
+        <td>string</td>
         <td>No</td>
         <td>id of channel used for authorizing capture</td>
-        <td>min: 1</td>
+        <td>min: 1, max: 19</td>
       </tr></p>
 
 <p><tr>
@@ -1886,7 +1887,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -1902,7 +1903,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[holder]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card holder</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1910,7 +1911,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_month]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration month</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1918,7 +1919,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_year]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration year</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -1926,7 +1927,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[number]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card number</td>
+        <td></td>
         <td>pattern: ^\d{12,16}$</td>
       </tr></p>
 
@@ -1958,7 +1959,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[ip]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer IP address</td>
+        <td></td>
         <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
       </tr></p>
 
@@ -1966,7 +1967,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[email]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer email</td>
+        <td></td>
         <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
       </tr></p>
 
@@ -1974,7 +1975,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[first_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer first name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1982,7 +1983,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[last_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer last name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -1990,7 +1991,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[phone_number]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer phone number</td>
+        <td></td>
         <td>pattern: ^+?[()/\d-]{5,20}$</td>
       </tr></p>
 
@@ -1998,7 +1999,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[date_of_birth]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer date of birth</td>
+        <td></td>
         <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
       </tr></p>
 
@@ -2150,7 +2151,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
           <h2 id='charge-a-credit-card-3d-secure'>Charge a Credit-Card 3d-Secure</h2>
 <p>Charge 3d-Secure Payments basically have the same request as standard <a href="#charge-a-credit-card">charge</a> Payments.
 Charge 3d-Secure  Payments have a <a href="#payment-workflows">redirect workflow</a></p>
-<h3 id='create-an-authorize-3d-secure'>Create an Authorize 3d-Secure</h3>
+<h3 id='create-a-3d-secure-charge'>Create a 3d-Secure Charge</h3>
 <p><code class="prettyprint">POST /payments/charge/credit_card_3d_secure</code></p>
 <pre class="highlight shell"><code><span class="c"># Charge a Credit-Card usign 3D-Secure</span>
 curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
@@ -2233,10 +2234,10 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 <p><p> charge a credit card using 3d Secure </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
-        <td>integer</td>
+        <td>string</td>
         <td>No</td>
         <td>id of channel used for authorizing capture</td>
-        <td>min: 1</td>
+        <td>min: 1, max: 19</td>
       </tr></p>
 
 <p><tr>
@@ -2259,7 +2260,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -2275,7 +2276,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[holder]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card holder</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -2283,7 +2284,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_month]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration month</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -2291,7 +2292,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[expiration_year]</td>
         <td>integer</td>
         <td>No</td>
-        <td>credit card expiration year</td>
+        <td></td>
         <td></td>
       </tr></p>
 
@@ -2299,7 +2300,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>credit_card[number]</td>
         <td>string</td>
         <td>No</td>
-        <td>credit card number</td>
+        <td></td>
         <td>pattern: ^\d{12,16}$</td>
       </tr></p>
 
@@ -2331,7 +2332,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[ip]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer IP address</td>
+        <td></td>
         <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
       </tr></p>
 
@@ -2339,7 +2340,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[email]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer email</td>
+        <td></td>
         <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
       </tr></p>
 
@@ -2347,7 +2348,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[first_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer first name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -2355,7 +2356,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[last_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer last name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -2363,7 +2364,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[phone_number]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer phone number</td>
+        <td></td>
         <td>pattern: ^+?[()/\d-]{5,20}$</td>
       </tr></p>
 
@@ -2371,7 +2372,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[date_of_birth]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer date of birth</td>
+        <td></td>
         <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
       </tr></p>
 
@@ -2528,14 +2529,6 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
       </tr></p>
 
 <p><tr>
-        <td>urls[notification]</td>
-        <td>string</td>
-        <td>No</td>
-        <td></td>
-        <td></td>
-      </tr></p>
-
-<p><tr>
         <td>urls[success]</td>
         <td>string</td>
         <td>No</td>
@@ -2636,10 +2629,10 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 <p><p> charge a sepa account </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
-        <td>integer</td>
+        <td>string</td>
         <td>No</td>
-        <td></td>
-        <td>min: 1</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
       </tr></p>
 
 <p><tr>
@@ -2662,7 +2655,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>meta</td>
         <td>object</td>
         <td>No</td>
-        <td>As a Merchant you usually want to add an order ID and customer email to the payment so you have the connection between your systen and helios.</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
         <td></td>
       </tr></p>
 
@@ -2718,7 +2711,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[ip]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer IP address</td>
+        <td></td>
         <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
       </tr></p>
 
@@ -2726,7 +2719,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[email]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer email</td>
+        <td></td>
         <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
       </tr></p>
 
@@ -2734,7 +2727,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[first_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer first name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -2742,7 +2735,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[last_name]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer last name</td>
+        <td></td>
         <td>min: 1, max: 13</td>
       </tr></p>
 
@@ -2750,7 +2743,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[phone_number]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer phone number</td>
+        <td></td>
         <td>pattern: ^+?[()/\d-]{5,20}$</td>
       </tr></p>
 
@@ -2758,7 +2751,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>customer_info[date_of_birth]</td>
         <td>string</td>
         <td>No</td>
-        <td>customer date of birth</td>
+        <td></td>
         <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
       </tr></p>
 
@@ -2983,6 +2976,264 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 
 </span></code></pre>
 
+<p><p> charge a sepa account </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>string</td>
+        <td>No</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[account_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 4</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
+
           <h2 id='charge-eps'>Charge EPS</h2>
 <p>EPS is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with an Austrian Bank Account.</p>
 
@@ -3026,6 +3277,264 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
   </span><span class="s2">"redirect_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://test.dp.ag/redirect/acquirer/0a840ae3-7a33-4a5b-9f68-79903ea7990e"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p><p> charge a sepa account </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>string</td>
+        <td>No</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[holder]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[account_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 4</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
 
           <h2 id='charge-sofort'>Charge Sofort</h2>
 <p>Sofort or Sofortüberweisung is a Payment Methods provided by <a href="https://www.sofort.com">SOFORT AG</a>.
@@ -3098,6 +3607,264 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
+<p><p> issue a sofort-überweisung, async </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>string</td>
+        <td>No</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[success]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[failure]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[cancel]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>descriptor</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td></td>
+        <td>pattern: ^[-0-9a-zA-Z+,\s-.]{3,27}$</td>
+      </tr>
+      </table></p>
+
           <h2 id='charge-giro'>Charge Giro</h2>
 <p>Giro or GiroPay is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with an German Bank Account.</p>
 
@@ -3163,11 +3930,277 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-          <h2 id='charge-ideal'>Charge Ideal</h2>
-<p>Ideal or ideal is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a dutch Bank Account.</p>
+<p><p> issue a giro-pay, async </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>string</td>
+        <td>No</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[success]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[failure]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[cancel]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
+
+          <h2 id='charge-ideal'>Charge iDeal</h2>
+<p>iDeal is a <a href="#payment-workflows">redirect</a> based Bank Account Payment available for Customers with a dutch Bank Account.</p>
 
 <p><code class="prettyprint">POST /payments/charge/ideal</code></p>
-<h3 id='create-an-grio-charge'>Create an Grio Charge</h3><pre class="highlight shell"><code><span class="c"># Create an iDeal Charge</span>
+<h3 id='create-an-ideal-charge'>Create an iDeal charge</h3><pre class="highlight shell"><code><span class="c"># Create an iDeal Charge</span>
 curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{
   "amount": 890811,
   "currency": "EUR",
@@ -3235,6 +4268,296 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p><p> issue a dutch ideal, async </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
+      <tr>
+        <td>channel_id</td>
+        <td>string</td>
+        <td>No</td>
+        <td>The objects id an int64 as string</td>
+        <td>min: 1, max: 19</td>
+      </tr></p>
+
+<p><tr>
+        <td>amount</td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Amount in cents, must be &gt; 0</td>
+        <td>min: 1, max: 2147483647</td>
+      </tr></p>
+
+<p><tr>
+        <td>currency</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Currency code in ISO 4217 (http://www.xe.com/iso4217.php)</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>meta</td>
+        <td>object</td>
+        <td>No</td>
+        <td>A Hashtable when key and value must be strings. Allows to accociate arbitrary data with the parent object.</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[iban]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>bank_account[bic]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[success]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[failure]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>urls[cancel]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info</td>
+        <td>object</td>
+        <td>Yes</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[ip]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[1-2]?\d{1,2}(.[1-2]?\d{1,2}){3}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[email]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^[^\s]+\@[^\s]+.[^\s]+$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>min: 1, max: 13</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[phone_number]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^+?[()/\d-]{5,20}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>customer_info[date_of_birth]</td>
+        <td>string</td>
+        <td>No</td>
+        <td></td>
+        <td>pattern: ^\d{4}-\d{2}-\d{2}$</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>billing_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address</td>
+        <td>object</td>
+        <td>No</td>
+        <td></td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[first_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[last_name]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers first name</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line1]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>first line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[line2]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>second line of address</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[city]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 255</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[zip_code]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>the customers city</td>
+        <td>min: 1, max: 32</td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[state]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>state code in ISO 3166-2, only needed for USA and Canada and Australia</td>
+        <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>shipping_address[country]</td>
+        <td>string</td>
+        <td>No</td>
+        <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
+        <td></td>
+      </tr>
+      </table></p>
 
           <h2 id='channels'>Channels</h2>
 <p>A Channel represents a use case of a merchant. A Channels is the Entity which Merchants receive invoices for usually. In case a Merchant wants to receive different invoices eg. for two separate websites he should consider using distinct channels for each of the websites.</p>
