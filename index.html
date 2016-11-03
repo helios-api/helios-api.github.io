@@ -449,16 +449,16 @@ user.</p>
 </span></code></pre>
 
           <h2 id='api-tokens'>API Tokens</h2>
-<p>Api-Tokens are used to Authenticate the access to the gateway. Both HPP integration and API integration are using API tokens.</p>
+<p>API Tokens are used to Authenticate the access to the gateway. Both HPP integration and API integration are using API Tokens.</p>
 
-<p>The Auth token get concatenated of the tokens <code class="prettyprint">uuid:password</code>.</p>
+<p>Full token cotains two concatenated parts separated by colon <code class="prettyprint">uuid:password</code>. <code class="prettyprint">uuid</code> you can retreive any time, <code class="prettyprint">password</code> is secret and it is present only in <code class="prettyprint">POST /api_tokens</code> response only.</p>
 
 <p><code class="prettyprint">X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:YOURSuperSecr3tPassword.</code></p>
 
 <p><aside class="notice">When Createing a token, you have to remember the password to use the token. A tokens password can not be retrieved later.</aside></p>
-<h3 id='get-a-list-of-api-tokens'>Get a list of Api-Tokens</h3>
+<h3 id='get-a-list-of-api-tokens'>Get a list of API Tokens</h3>
 <p><code class="prettyprint">GET /api_tokens</code></p>
-<pre class="highlight shell"><code><span class="c"># Get the list of API-Tokens</span>
+<pre class="highlight shell"><code><span class="c"># Get the list of API Tokens</span>
 curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span>  https://test.dp.ag/api_tokens
 
 <span class="gp">=&gt; </span>200 OK
@@ -471,8 +471,24 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
   <span class="o">}</span>
 <span class="o">]</span>
 </code></pre>
+
+<div class="clearfix"></div>
 <h3 id='create-an-api-token'>Create an API-Token</h3>
-<p>To create an Api-Token Post to using the following fields:</p>
+<p>In order to create API Token:</p>
+
+<p><code class="prettyprint">POST /api_tokens</code></p>
+<pre class="highlight shell"><code><span class="c"># Create an API-Token</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{"name":"two","password":"someThinGVeYS3cet.andveryveryverylonG"}'</span> https://test.dp.ag/api_tokens
+
+
+<span class="gp">=&gt; </span>201 Created
+
+<span class="o">{</span>
+  <span class="s2">"uuid"</span>: <span class="s2">"0289bbe2-dbfb-4fee-9dfd-ecb1090496fb"</span>,
+  <span class="s2">"name"</span>: <span class="s2">"two"</span>,
+  <span class="s2">"created_at"</span>: <span class="s2">"2015-04-15T15:54:14.992586Z"</span>
+<span class="o">}</span>
+</code></pre>
 
 <p><p> ApiToken </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
@@ -492,18 +508,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
       </tr>
       </table></p>
 
-<p><code class="prettyprint">POST /api_tokens</code></p>
-<pre class="highlight shell"><code><span class="c"># Create an API-Token</span>
-curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d <span class="s1">'{"name":"two","password":"someThinGVeYS3cet.andveryveryverylonG"}'</span> https://test.dp.ag/api_tokens
-
-<span class="gp">=&gt; </span>201 Created
-
-<span class="o">{</span>
-  <span class="s2">"uuid"</span>: <span class="s2">"0289bbe2-dbfb-4fee-9dfd-ecb1090496fb"</span>,
-  <span class="s2">"name"</span>: <span class="s2">"two"</span>,
-  <span class="s2">"created_at"</span>: <span class="s2">"2015-04-15T15:54:14.992586Z"</span>
-<span class="o">}</span>
-</code></pre>
+<div class="clearfix"></div>
 <h3 id='delete-an-api-token'>Delete an API-Token</h3>
 <p><code class="prettyprint">DELETE /api_tokens/{uuid}</code></p>
 <pre class="highlight shell"><code><span class="c"># Delete an API-Tokens</span>
@@ -703,10 +708,72 @@ The following Types are supported:</p>
 <li>Capture (<code class="prettyprint">root_id</code> and <code class="prettyprint">ref_id</code> are the <code class="prettyprint">authozize.id</code>)</li>
 <li>Partillay Refund the Capture (<code class="prettyprint">root_id</code> is the <code class="prettyprint">authozize.id</code> and <code class="prettyprint">ref_id</code> is <code class="prettyprint">capture.id</code>)</li>
 </ol>
-<h2 id='getting-a-list-of-payments'>Getting a List of Payments</h2>
+<h2 id='getting-a-list-of-payments'>Getting a List of Payments</h2><pre class="highlight shell"><code><span class="c"># Get a List of Payments</span>
+curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> https://test.dp.ag/payments
+</code></pre>
+
+<blockquote>
+<p>=&gt; 200</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+</span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550059965055832"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887227</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bee53b55-7281-4517-45a2-09d84e4a70e1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550058245391191"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887226</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b043daa3-69de-4b14-4ade-42827d69f490"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre>
+
 <p><code class="prettyprint">GET /payments</code></p>
 
-<p>The Payments List can be filtered using query params eg.</p>
+<p>The Payments List can be filtered using query params e.g.</p>
 
 <p><code class="prettyprint">GET /payments?currency=EUR&amp;status=approved</code></p>
 
@@ -774,7 +841,7 @@ The following Types are supported:</p>
 </tr>
 <tr>
 <td>types</td>
-<td>type equals one of the prvided values <code class="prettyprint">types[]=charge&amp;types[]=refund</code></td>
+<td>type equals one of the provided values <code class="prettyprint">types[]=charge&amp;types[]=refund</code></td>
 </tr>
 <tr>
 <td>methods</td>
@@ -804,6 +871,18 @@ The following Types are supported:</p>
 <td>created_date_lteq</td>
 <td>payments was created at or predeceasing to provided date <code class="prettyprint">created_date_lteq=2015-01-01</code></td>
 </tr>
+<tr>
+<td>search</td>
+<td>fulltext seatch on billing_info, customer_info and id <code class="prettyprint">search=john+doe</code></td>
+</tr>
+<tr>
+<td>fxc</td>
+<td>payment was created with FX, boolean <code class="prettyprint">fxc=true</code></td>
+</tr>
+<tr>
+<td>fxc_currencies</td>
+<td>payment was created with FX and given currencies were used, array <code class="prettyprint">fxc_currencies[]=GBP</code></td>
+</tr>
 </tbody></table>
 <h3 id='orderingsorting'>Ordering/Sorting</h3>
 <p>The Payments List can be ordered using the <code class="prettyprint">order_by</code> query params.</p>
@@ -819,68 +898,6 @@ The following Types are supported:</p>
 <p>The direction of the ordering can be added to the param using +. You can also combine ordering options using a comma.</p>
 
 <p><code class="prettyprint">GET /payments?order_by=amount+DESC,currency+ASC</code></p>
-<pre class="highlight shell"><code><span class="c"># Get a List of Payments</span>
-curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> https://test.dp.ag/payments
-</code></pre>
-
-<blockquote>
-<p>=&gt; 200</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-</span><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550059965055832"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887227</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bee53b55-7281-4517-45a2-09d84e4a70e1"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.346249Z"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135550058245391191"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"root_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"ref_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"channel_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">980190962</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"channel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"All Features EUR"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"credit_card"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charge"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">887226</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"approved"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b043daa3-69de-4b14-4ade-42827d69f490"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"billing_data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"card_brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"card_holder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manfred Muster"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"card_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visa xxxx xxxx 0000"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"customer_info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"ip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1.1.1"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-04-27T12:33:46.141286Z"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-
-</span></code></pre>
 
           <h2 id='errors-classes'>Errors Classes</h2>
 <p>The errors retured fomr the helios API are grouped in classes.</p>
@@ -1322,8 +1339,8 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
       </table></p>
 
           <h2 id='authorize-a-credit-card-3d-secure'>Authorize a Credit-Card 3d-Secure</h2>
-<p>Authorize 3d-Secure Payments calls basically have the same parameters as standard <a href="#authorize-a-credit-card">authorize</a> Payments.
-Authorize 3d-Secure  Payments calls have a <a href="#payment-workflows">redirect workflow</a></p>
+<p>Authorize 3d-Secure Payment accepts the same parameters as standard <a href="#authorize-a-credit-card">authorize</a> Payment.
+Authorize 3d-Secure Payment uses <a href="#payment-workflows">redirect workflow</a></p>
 <h3 id='create-a-3d-secure-authorize'>Create a 3d-Secure Authorize</h3>
 <p><code class="prettyprint">POST /payments/authorize/credit_card_3d_secure</code></p>
 <pre class="highlight shell"><code>curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class="s2">"X-Token: d4d5da5c-f2c9-4bfa-8c4f-3e116fd69057:SbcNpIWsyQUYYIfLy9mvRZ0K8HYX12v0"</span> -d  <span class="s1">'{
