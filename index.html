@@ -360,8 +360,7 @@ user.</p>
   </span><span class="s2">"source_id"</span><span class="p">:</span><span class="s2">"506540696413405817"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2016-09-20T11:25:56.694252787+02:00"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-<h3 id='code-classprettyprintevent_typecode-key'><code class="prettyprint">event_type</code> key</h3>
+</span></code></pre><h3 id='code-classprettyprintevent_typecode-key'><code class="prettyprint">event_type</code> key</h3>
 <p>It has 4 parts devided by <code class="prettyprint">.</code> mark.</p>
 
 <ol>
@@ -2584,7 +2583,7 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
     "order_id": "54c1b046-1f06-4d1c-4af3-53c6ab0222c0"
   },
   "sepa": {
-    "iban": " DE89370400440532013000",
+    "iban": "DE89370400440532013000",
     "bic": "COBADEFFXXX"
   },
   "customer_info": {
@@ -2597,10 +2596,10 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
     "zip_code": "12345",
     "city": "Berlin",
     "country": "DE"
-  }
+  },
+  "descriptor": "Order 123"
 }'</span> https://test.dp.ag/payments/charge/sepa
 </code></pre>
-
 <blockquote>
 <p>=&gt; 201</p>
 </blockquote>
@@ -2642,7 +2641,6 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-
 <p><p> charge a sepa account </p><table><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th><th>Restrictions</th></tr>
       <tr>
         <td>channel_id</td>
@@ -2914,6 +2912,14 @@ curl  -H <span class="s2">"Content-Type: application/json"</span> -H <span class
         <td>No</td>
         <td>country code in ISO 3166-1 (alpha-2), http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</td>
         <td></td>
+      </tr></p>
+
+<p><tr>
+        <td>descriptor</td>
+        <td>string</td>
+        <td>Yes</td>
+        <td></td>
+        <td>pattern: ^[-0-9a-zA-Z+,\s-.]{3,27}$</td>
       </tr>
       </table></p>
 
